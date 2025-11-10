@@ -12,6 +12,10 @@ class Tree {
     constructor(array) {
         this.root = buildTree(array);
     }
+
+    insert(value) {
+        this.root = insertNode(this.root, value);
+    }
 }
 
 // 3
@@ -46,5 +50,25 @@ function buildTree(array) {
     return buildBalancedTree(sortedArray);
 }
 
+// 4
+function insertNode(node, value) {
+    if (node === null) {
+        console.log(`Inserting new node: ${value}`);
+        return new Node(value);
+    }
+
+    if (value < node.data) {
+        console.log(`Going LEFT from ${node.data}`);
+        node.left = insertNode(node.left, value);
+    } else if (value > node.data) {
+        console.log(`Going RIGHT from ${node.data}`);
+        node.right = insertNode(node.right, value);
+    } else {
+        console.log(`Value ${value} already exists — skipping`);
+    }
+
+    return node;
+}
+
 const tree = new Tree([2, 1, 4, 3, 6, 5, 7, 7, 7]);
-console.log("\n✅ Final BST Root:", tree.root);
+console.log("\n Final BST Root:", tree.root);
