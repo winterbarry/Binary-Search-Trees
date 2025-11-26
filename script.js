@@ -20,6 +20,10 @@ class Tree {
     deleteItem(value) {
         this.root = deleteNode(this.root, value);
     }
+
+    find(value) {
+        return findNode(this.root, value);
+    }
 }
 
 // 3
@@ -101,6 +105,24 @@ function deleteNode(node, value) {
     return node;
 }
 
+// 6
+function findNode(node, value) {
+    if (node === null) return null; // value not found
+
+    if (value === node.data) {
+        return node; 
+    }
+
+    if (value < node.data) {
+        return findNode(node.left, value); // search left
+    }
+
+    if (value > node.data) {
+        return findNode(node.right, value); // search left
+    }
+}
+
+
 const tree = new Tree([2, 1, 4, 3, 6, 5, 7, 7, 7]);
 console.log("\n Final BST Root:", tree.root);
 
@@ -109,3 +131,6 @@ console.log("\n New Tree:", tree.root);
 
 tree.deleteItem(1);
 console.log("\nAfter deletion:", tree.root);
+
+const found = tree.find(6);
+console.log(found); 
