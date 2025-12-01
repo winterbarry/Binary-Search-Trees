@@ -30,6 +30,11 @@ class Tree {
         if (node === null) return null; // value not found
         return nodeHeight(node);
     }
+
+    depth(value) {
+        return nodeDepth(this.root, value);
+    }
+
 }
 
 // 3
@@ -146,6 +151,21 @@ function nodeHeight(node) {
     return 1 + Math.max(leftHeight, rightHeight);
 }
 
+// 10
+function nodeDepth(node, value, depth = 0) {
+    if (node === null) return null; 
+
+    if (value === node.data) {
+        return depth; 
+    }
+
+    if (value < node.data) {
+        return nodeDepth(node.left, value, depth + 1);
+    } else {
+        return nodeDepth(node.right, value, depth + 1);
+    }
+}
+
 const tree = new Tree([2, 1, 4, 3, 6, 5, 7, 7, 7]);
 console.log("\n Final BST Root:", tree.root);
 
@@ -159,3 +179,5 @@ const found = tree.find(6);
 console.log(found); 
 
 console.log("Height of 7:", tree.height(7));
+
+console.log(tree.depth(7)); 
