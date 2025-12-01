@@ -1,6 +1,6 @@
 // 1
 class Node {
-    constructor(data, left, right) {
+    constructor(data, left = null, right = null) {
         this.data = data;
         this.left = left;
         this.right = right;
@@ -23,6 +23,12 @@ class Tree {
 
     find(value) {
         return findNode(this.root, value);
+    }
+
+    height(value) {
+        const node = this.find(value);
+        if (node === null) return null; // value not found
+        return nodeHeight(node);
     }
 }
 
@@ -76,30 +82,32 @@ function insertNode(node, value) {
 function deleteNode(node, value) {
     if (node === null) return null; // base case: value not found
 
-    // traverse down to find the node
+    // traverse to find node
     if (value < node.data) {
         node.left = deleteNode(node.left, value);
     } else if (value > node.data) {
         node.right = deleteNode(node.right, value);
     } else {
-        // if current node has no children
+        // if no children
         if (node.left === null && node.right === null) {
-            console.log(`Deleting leaf node: ${node.data}`);
             return null;
         }
- 
-        // if current node has one child
-        if (node.left === null) {
-        console.log(`Deleting node ${node.data} with RIGHT child`);
-        return node.right;
+
+        // if one one child
+        if (node.left === null) return node.right;
+        if (node.right === null) return node.left;
+
+        // if two children
+        let successor = node.right;
+        while (successor.left !== null) {
+            successor = successor.left;
         }
 
-        if (node.right === null) {
-        console.log(`Deleting node ${node.data} with LEFT child`);
+        node.data = successor.data;
 
-        return node.left;
-        }
+        node.right = deleteNode(node.right, successor.data);
 
+        return node;
     }
 
     return node;
@@ -120,8 +128,23 @@ function findNode(node, value) {
     if (value > node.data) {
         return findNode(node.right, value); // search left
     }
+
+    return null;
 }
 
+// 7
+
+// 8
+
+// 9
+function nodeHeight(node) {
+    if (node === null) return -1; 
+
+    const leftHeight = nodeHeight(node.left);
+    const rightHeight = nodeHeight(node.right);
+
+    return 1 + Math.max(leftHeight, rightHeight);
+}
 
 const tree = new Tree([2, 1, 4, 3, 6, 5, 7, 7, 7]);
 console.log("\n Final BST Root:", tree.root);
@@ -134,3 +157,5 @@ console.log("\nAfter deletion:", tree.root);
 
 const found = tree.find(6);
 console.log(found); 
+
+console.log("Height of 7:", tree.height(7));
